@@ -1,3 +1,4 @@
+# Template job file
 job_name: test
 command: "echo 'howdy'"
 job_type: command

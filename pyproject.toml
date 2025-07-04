@@ -1,0 +1,18 @@
+[project]
+name = "pysched"
+version = "0.1.0"
+description = "A Python Job Scheduler"
+authors = [
+    {name = "Adam",email = "adam@gatherer.tech"}
+]
+license = {text = "CC BY-NC-ND-AGADOO 1.0"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml (>=6.0.2,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
