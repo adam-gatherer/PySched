@@ -1,5 +1,5 @@
 # Template job file
-job_name: test
+job_name: T01_TEST_JOB
 command: "echo 'howdy'"
 job_type: command
 start_time: "00:00"
