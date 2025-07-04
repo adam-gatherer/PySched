@@ -9,12 +9,13 @@ def get_connection():
 
 
 def init_db():
-    """Create tables if they don't exist."""
+    # Create table if doesn't exist
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Example minimal schema — expand later
-    cursor.execute("""
+    # schema
+    cursor.execute(
+        """
         CREATE TABLE IF NOT EXISTS jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             job_name TEXT UNIQUE NOT NULL,
@@ -27,13 +28,13 @@ def init_db():
             enabled BOOLEAN NOT NULL,
             description TEXT
         );
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
 
 def ensure_db_exists():
-    """Call this from pysched.py before anything else runs."""
     if not os.path.exists(db_path):
         print("Creating database...")
     init_db()
