@@ -69,6 +69,11 @@ def show_job_cli(identifier: str, by_id=False):
 
 def remove_job_cli(identifier: str, by_id=False):
     if by_id:
-        rm_job_by_id(identifier)
+        removed = rm_job_by_id(identifier)
     else:
-        rm_job_by_name(identifier)
+        removed = rm_job_by_name(identifier)
+
+    if removed:
+        print(f"Job {identifier} removed")
+    else:
+        print(f"No job found with identifier: '{identifier}'")
