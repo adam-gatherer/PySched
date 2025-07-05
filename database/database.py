@@ -118,3 +118,13 @@ def get_job_by_name(job_name: str):
     row = cursor.fetchone
     conn.close()
     return row
+
+def get_job_by_id(job_id: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "select * from jobs where id = ?", (job_id,)
+    )
+    row = cursor.fetchone
+    conn.close()
+    return row
