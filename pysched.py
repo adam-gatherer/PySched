@@ -35,6 +35,11 @@ def main():
     elif args.command == "list-jobs":
         list_jobs_cli()
     elif args.command == "show-job":
+        if args.job_id:
+            try:
+                identifier = int(args.identifier)
+            except ValueError:
+                print("Err, job ID must be an integer.")
         show_job_cli(args.identifier, by_id=args.job_id)
     else:
         parser.print_help()
