@@ -24,8 +24,7 @@ def init_db():
             job_type TEXT NOT NULL,
             start_time TEXT NOT NULL,
             run_days TEXT NOT NULL,
-            condition_type TEXT,
-            dependent_jobs TEXT,
+            conditions TEXT,
             enabled BOOLEAN NOT NULL,
             description TEXT
         );
@@ -64,8 +63,8 @@ def insert_job(job_data: dict):
             """
             INSERT INTO jobs (
                 job_name, command, job_type, start_time, run_days,
-                condition_type, dependent_jobs, enabled, description
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                conditions, enabled, description
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 job_name,
@@ -90,7 +89,7 @@ def list_jobs():
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "select id, job_name, command, job_type, start_time, run_days, enabled, description from jobs"
+        "select id, job_name, command, job_type, start_time, run_days, conditions, enabled, description from jobs"
     )
     rows = cursor.fetchall()
     cursor.close()
@@ -104,8 +103,9 @@ def list_jobs():
             "job_type": row[3],
             "start_time": row[4],
             "run_days": row[5],
-            "enabled": bool(row[6]),
-            "description": row[7],
+            "conditions": row[6],
+            "enabled": bool(row[7]),
+            "description": row[8],
         }
         jobs.append(job)
     return jobs

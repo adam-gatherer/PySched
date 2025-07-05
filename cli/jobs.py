@@ -9,7 +9,7 @@ def add_job_from_file(filename: str):
             insert_job(job_data)
             print(f"Job {job_data['job_name']} added to database.")
         except Exception as e:
-            print("Failed to load job: {e}")
+            print(f"Failed to load job: {e}")
 
 
 def list_jobs_cli():
@@ -24,6 +24,7 @@ def list_jobs_cli():
         "job_type",
         "start_time",
         "run_days",
+        "conditions@,"
         "enabled",
         "description",
     ]
