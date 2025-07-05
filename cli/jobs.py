@@ -22,7 +22,7 @@ def list_jobs_cli():
     print("JOBS IN SCHEDULER:")
     for job in jobs:
         print(f"\n-{job['job_name']}")
-        for key,val in job.items():
+        for key, val in job.items():
             print(f"  {key:<12}: {val}")
     print("\n")
 
@@ -32,7 +32,7 @@ def show_job_cli(indentifier, by_id=False):
         job_row = get_job_by_id(indentifier)
     else:
         job_row = get_job_by_name(indentifier)
-    
+
     if not job_row:
         print(f"Job not found: {indentifier}")
         return
