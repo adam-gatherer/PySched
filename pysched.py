@@ -36,6 +36,9 @@ def main():
     rm_parser.add_argument(
         "-id", "--job-id", action="store_true", help="Remove job by ID"
     )
+    rm_parser.add_argument(
+    "-f", "--force", action="store_true", help="Force delete without confirmation"
+    )
 
     add_parser.add_argument("filename", help="Path to .job YAML file")
     # Show single job
@@ -68,7 +71,7 @@ def main():
         if args.job_id:
             try:
                 identifier = int(args.identifier)
-                remove_job_cli(args.identifier, by_id=args.job_id)
+                remove_job_cli(args.identifier, by_id=args.job_id, force=args.force)
             except ValueError:
                 print("Err, job ID must be an integer.")
     else:
