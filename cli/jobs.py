@@ -18,33 +18,9 @@ def list_jobs_cli():
         print("Err, no jobs found.")
         return
 
-    headers = [
-        "job_name",
-        "command",
-        "job_type",
-        "start_time",
-        "run_days",
-        "conditions@,"
-        "enabled",
-        "description",
-    ]
-
-    #
-    # Come back to this later - not important
-    #
-    # print(
-    #    f"|{headers[0]:<20} |{headers[1]:<30} |{headers[2]:<15} |{headers[3]:<12} |{headers[4]:<30} |{headers[5]:<10} |{headers[6]:<40}|"
-    # )
-    # print("-" * 171)
-
-    # for job in jobs:
-    #    print(
-    #        f"|{job['job_name']:<20} |{job['command']:<30} |{job['job_type']:<15} |{job['start_time']:<12} |{job['run_days']:<30} |{str(job['enabled']):<10} |{job['description']:<40}"
-    #    )
-    #    print("-" * 171)
-    print("JOBS IN SCHEDULER:\n")
+    print("JOBS IN SCHEDULER:")
     for job in jobs:
-        print(f"-{job['job_name']}")
+        print(f"\n-{job['job_name']}")
         for key,val in job.items():
             print(f"  {key:<12}: {val}")
     print("\n")
