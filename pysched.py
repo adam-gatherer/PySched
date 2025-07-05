@@ -16,6 +16,12 @@ def main():
         "add-job", help="Add a job from a .job YAML file"
     )
     add_parser.add_argument("filename", help="Path to .job YAML file")
+    # Show single job
+    show_parser = subparsers.add_parser(
+        "show-job", help="Show detailed info for a job"
+    )
+    show_parser.add_argument('idenfitier', help='Job name or job ID')
+    show_parser.add_argument('-id', '--job-id', action='store_true', help='Lookup job by ID')
     # Listing all jobs
     list_parser = subparsers.add_parser(
         "list-jobs", help="List jobs in scheduler database"
