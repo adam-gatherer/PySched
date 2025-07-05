@@ -25,6 +25,8 @@ def init_db():
             start_time TEXT NOT NULL,
             run_days TEXT NOT NULL,
             conditions TEXT,
+            timeout_seconds INTEGER DEFAULT 300,
+            retry_count INTEGER DEFAULT 0,
             enabled BOOLEAN NOT NULL,
             description TEXT
         );
@@ -48,6 +50,8 @@ def insert_job(job_data: dict):
     start_time = job_data.get("start_time")
     run_days = job_data.get("run_days", [])
     conditions = job_data.get("condition_type")
+    retry_count = job_data.get("retry_count", 0)
+    timeout_seconds = job_data.get("timeout_seconds", 300)
     enabled = job_data.get("enabled", True)
     description = job_data.get("description", "")
 
@@ -62,8 +66,8 @@ def insert_job(job_data: dict):
             """
             INSERT INTO jobs (
                 job_name, command, job_type, start_time, run_days,
-                conditions, enabled, description
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                conditions, retry_count, timeout_seconds, enabled, description
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 job_name,
@@ -72,6 +76,8 @@ def insert_job(job_data: dict):
                 start_time,
                 run_days_str,
                 conditions_str,
+                retry_count,
+                timeout_seconds,
                 int(enabled),  # SQLite uses 0/1 for bools
                 description,
             ),
@@ -87,7 +93,7 @@ def list_jobs():
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "select id, job_name, command, job_type, start_time, run_days, conditions, enabled, description from jobs"
+        "select id, job_name, command, job_type, start_time, run_days, conditions, retry_count, timeout_seconds, enabled, description from jobs"
     )
     rows = cursor.fetchall()
     cursor.close()
@@ -102,8 +108,10 @@ def list_jobs():
             "start_time": row[4],
             "run_days": row[5],
             "conditions": row[6],
-            "enabled": bool(row[7]),
-            "description": row[8],
+            "retry_count": row[7],
+            "timeout_seconds": row[8],
+            "enabled": bool(row[9]),
+            "description": row[10],
         }
         jobs.append(job)
     return jobs
