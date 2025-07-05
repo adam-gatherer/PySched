@@ -47,14 +47,13 @@ def insert_job(job_data: dict):
     job_type = job_data.get("job_type")
     start_time = job_data.get("start_time")
     run_days = job_data.get("run_days", [])
-    condition_type = job_data.get("condition_type")
-    dependent_jobs = job_data.get("dependent_jobs", [])
+    conditions = job_data.get("condition_type")
     enabled = job_data.get("enabled", True)
     description = job_data.get("description", "")
 
     # serialise list fields
     run_days_str = jason.dumps(run_days)
-    dependent_jobs_str = jason.dumps(dependent_jobs)
+    conditions_str = jason.dumps(conditions)
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -72,8 +71,7 @@ def insert_job(job_data: dict):
                 job_type,
                 start_time,
                 run_days_str,
-                condition_type,
-                dependent_jobs_str,
+                conditions_str,
                 int(enabled),  # SQLite uses 0/1 for bools
                 description,
             ),
