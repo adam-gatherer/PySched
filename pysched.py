@@ -35,7 +35,7 @@ def main():
     elif args.command == "list-jobs":
         list_jobs_cli()
     elif args.command == "show-job":
-        show_job_cli(args.identifier, by_id=args.by_id)
+        show_job_cli(args.identifier, by_id=args.job_id)
     else:
         parser.print_help()
 
