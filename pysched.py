@@ -1,5 +1,5 @@
 from database.database import ensure_db_exists
-from cli.jobs import add_job_from_file, list_jobs_cli, show_job_cli
+from cli.jobs import add_job_from_file, list_jobs_cli, show_job_cli, remove_job_cli
 import yaml
 import argparse
 
@@ -39,6 +39,7 @@ def main():
     # Catch arguments
     args = parser.parse_args()
 
+    # Job handler
     if args.command == "add-job":
         add_job_from_file(args.filename)
     elif args.command == "list-jobs":
@@ -50,6 +51,13 @@ def main():
             except ValueError:
                 print("Err, job ID must be an integer.")
         show_job_cli(args.identifier, by_id=args.job_id)
+    elif args.command == "rm-job":
+        if args.job_id:
+            try:
+                identifier = int(args.identifier)
+            except ValueError:
+                print("Err, job ID must be an integer.")
+        remove_job_cli(args.identifier, by_id=args.job_id)
     else:
         parser.print_help()
 
