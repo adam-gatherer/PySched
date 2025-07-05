@@ -107,3 +107,14 @@ def list_jobs():
         }
         jobs.append(job)
     return jobs
+
+
+def get_job_by_name(job_name: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "select * from jobs where job_name = ?", (job_name,)
+        )
+    row = cursor.fetchone
+    conn.close()
+    return row
