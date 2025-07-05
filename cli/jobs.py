@@ -67,7 +67,13 @@ def show_job_cli(identifier: str, by_id=False):
     print("\n")
 
 
-def remove_job_cli(identifier: str, by_id=False):
+def remove_job_cli(identifier: str, by_id=False, force=False):
+    if not force:
+        confirmed = confirm_removal(identifier, by_id)
+        if not confirmed:
+            print("Job removal canceled.")
+            return
+
     if by_id:
         removed = rm_job_by_id(identifier)
     else:
@@ -77,3 +83,9 @@ def remove_job_cli(identifier: str, by_id=False):
         print(f"Job {identifier} removed")
     else:
         print(f"No job found with identifier: '{identifier}'")
+
+
+def confirm_removal(identifier, by_id):
+    target = f"ID {identifier}" if by_id else f"{identifier}"
+    response = input(f"Confirm removal of job {target}? [y/n] ").strip().lower()
+    return response == "y"
