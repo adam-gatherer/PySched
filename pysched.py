@@ -13,15 +13,24 @@ def main():
 
     # Adding a job
     add_parser = subparsers.add_parser(
-        "add-job", help="Add a job from a .job YAML file"
+        "add-job", help="Add a job to the database scheduler from a .job YAML file"
     )
+    # Removing a job
+    rm_parser = subparsers.add_parser(
+        "rm-job", help="Remove a job from the scheduler database"
+    )
+    rm_parser.add_argument("identifier", help="Job name or job ID")
+    rm_parser.add_argument(
+        "-id", "--job-id", action="store_true", help="Remove job by ID"
+    )
+
     add_parser.add_argument("filename", help="Path to .job YAML file")
     # Show single job
-    show_parser = subparsers.add_parser(
-        "show-job", help="Show detailed info for a job"
+    show_parser = subparsers.add_parser("show-job", help="Show detailed info for a job")
+    show_parser.add_argument("identifier", help="Job name or job ID")
+    show_parser.add_argument(
+        "-id", "--job-id", action="store_true", help="Lookup job by ID"
     )
-    show_parser.add_argument('identifier', help='Job name or job ID')
-    show_parser.add_argument('-id', '--job-id', action='store_true', help='Lookup job by ID')
     # Listing all jobs
     list_parser = subparsers.add_parser(
         "list-jobs", help="List jobs in scheduler database"
