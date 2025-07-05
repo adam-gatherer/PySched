@@ -30,7 +30,7 @@ def list_jobs_cli():
     for job in jobs:
         print(f"\n-{job['job_name']}")
         for key, val in job.items():
-            print(f"  {key:<12}: {val}")
+            print(f"  {key:<17}: {val}")
     print("\n")
 
 
@@ -51,19 +51,23 @@ def show_job_cli(identifier: str, by_id=False):
         start_time,
         run_days_json,
         conditions,
+        retry_count,
+        timeout_seconds,
         enabled,
         description,
     ) = job_row
 
     print(f"\n-{job_name}")
-    print(f"  {'id':<12}: {job_id}")
-    print(f"  {'command':<12}: {command}")
-    print(f"  {'job_type':<12}: {job_type}")
-    print(f"  {'start_time':<12}: {start_time}")
-    print(f"  {'run_days':<12}: {run_days_json}")
-    print(f"  {'conditions':<12}: {conditions}")
-    print(f"  {'enabled':<12}: {enabled}")
-    print(f"  {'description':<12}: {description}")
+    print(f"  {'id':<17}: {job_id}")
+    print(f"  {'command':<17}: {command}")
+    print(f"  {'job_type':<17}: {job_type}")
+    print(f"  {'start_time':<17}: {start_time}")
+    print(f"  {'run_days':<17}: {run_days_json}")
+    print(f"  {'conditions':<17}: {conditions}")
+    print(f"  {'retry_count':<17}: {retry_count}")
+    print(f"  {'timeout_seconds':<17}: {timeout_seconds}")
+    print(f"  {'enabled':<17}: {enabled}")
+    print(f"  {'description':<17}: {description}")
     print("\n")
 
 

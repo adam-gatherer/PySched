@@ -5,5 +5,7 @@ job_type: command
 start_time: "00:00"
 run_days: ["Mon", "Wed", "Fri"]
 conditions:
+retry_count:
+timout_seconds:
 enabled: true
 description: "Friendly test job."
