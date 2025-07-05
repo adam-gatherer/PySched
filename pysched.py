@@ -48,16 +48,16 @@ def main():
         if args.job_id:
             try:
                 identifier = int(args.identifier)
+                show_job_cli(args.identifier, by_id=args.job_id)
             except ValueError:
                 print("Err, job ID must be an integer.")
-        show_job_cli(args.identifier, by_id=args.job_id)
     elif args.command == "rm-job":
         if args.job_id:
             try:
                 identifier = int(args.identifier)
+                remove_job_cli(args.identifier, by_id=args.job_id)
             except ValueError:
                 print("Err, job ID must be an integer.")
-        remove_job_cli(args.identifier, by_id=args.job_id)
     else:
         parser.print_help()
 

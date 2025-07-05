@@ -94,13 +94,19 @@ def remove_job_cli(identifier: str, by_id=False, force=False):
 
     if by_id:
         removed = rm_job_by_id(identifier)
+        if removed:
+            print(f"Job ID {identifier} removed")
+        else:
+            print(f"No job found with ID: '{identifier}'")
     else:
         removed = rm_job_by_name(identifier)
+        if removed:
+            print(f"Job {identifier} removed")
+        else:
+            print(f"No job found with name: '{identifier}'")
 
-    if removed:
-        print(f"Job {identifier} removed")
-    else:
-        print(f"No job found with identifier: '{identifier}'")
+
+
 
 
 def confirm_removal(identifier, by_id):
