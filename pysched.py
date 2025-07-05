@@ -1,5 +1,5 @@
 from database.database import ensure_db_exists
-from cli.jobs import add_job_from_file, list_jobs_cli
+from cli.jobs import add_job_from_file, list_jobs_cli, show_job_cli
 import yaml
 import argparse
 
@@ -34,6 +34,8 @@ def main():
         add_job_from_file(args.filename)
     elif args.command == "list-jobs":
         list_jobs_cli()
+    elif args.command == "show-job":
+        show_job_cli(args.identifier, by_id=args.by_id)
     else:
         parser.print_help()
 
