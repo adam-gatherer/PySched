@@ -1,10 +1,23 @@
+import argparse
+import yaml
 from database.database import ensure_db_exists
 from cli.jobs import add_job_from_file, list_jobs_cli, show_job_cli, remove_job_cli
-import yaml
-import argparse
 
 
 def main():
+    """
+    PySched application entry point.
+
+    Initialises the job scheduler database (if not present), sets up the command-line
+    interface using argparse, and handles the following commands:
+
+    - add-job: Adds new job to the scheduler from a .job YAML file.
+    - rm-job: Removes job from the database using job name or ID.
+    - show-job: Displays detailed information for a specific job.
+    - list-jobs: Lists all jobs currently in the scheduler database.
+
+    Parses command-line arguments and dispatches to the appropriate CLI handler function.
+    """
     ensure_db_exists()
 
     # CLI argument setup
@@ -63,6 +76,17 @@ def main():
 
 
 def load_job_file(filepath: str):
+    """
+    Loads and parses job definition from YAML file.
+
+    Args:
+        filepath (str): Path to the .job YAML file.
+
+    Returns:
+        dict or None: Parsed job data as dictionary if successful, otherwise None on error.
+
+    Prints error message if YAML is invalid or cannot be loaded.
+    """
     with open(filepath, "r") as file:
         try:
             job_data = yaml.safe_load(file)
