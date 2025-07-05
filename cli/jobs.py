@@ -27,14 +27,14 @@ def list_jobs_cli():
     print("\n")
 
 
-def show_job_cli(indentifier, by_id=False):
+def show_job_cli(identifier: str, by_id=False):
     if by_id:
-        job_row = get_job_by_id(indentifier)
+        job_row = get_job_by_id(identifier)
     else:
-        job_row = get_job_by_name(indentifier)
+        job_row = get_job_by_name(identifier)
 
     if not job_row:
-        print(f"Job not found: {indentifier}")
+        print(f"Job not found: {identifier}")
         return
     (
         job_id,
@@ -58,3 +58,14 @@ def show_job_cli(indentifier, by_id=False):
     print(f"  {'enabled':<12}: {enabled}")
     print(f"  {'description':<12}: {description}")
     print("\n")
+
+
+def remove_job_cli(identifier: str, by_id=False):
+    if by_id:
+        job_row = get_job_by_id(identifier)
+    else:
+        job_row = get_job_by_name(identifier)
+
+    if not job_row:
+        print(f"Job not found: {identifier}")
+        return
