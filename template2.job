@@ -1,0 +1,10 @@
+# Template job file
+job_name: T02_TEST_JOB
+command: "echo 'yeehaw'"
+job_type: command
+start_time: "12:05"
+run_days: ["*"]
+condition_type:
+dependent_jobs:
+enabled: true
+description: "Another test job."
