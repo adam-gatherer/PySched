@@ -1,5 +1,6 @@
 import yaml
-from database.database import insert_job, list_jobs
+from database.database import insert_job, list_jobs, get_job_by_name, get_job_by_id
+import json as jason
 
 
 def add_job_from_file(filename: str):
@@ -24,3 +25,17 @@ def list_jobs_cli():
         for key,val in job.items():
             print(f"  {key:<12}: {val}")
     print("\n")
+
+
+def show_job_cli(indentifier, by_id=False):
+    if by_id:
+        job_row = get_job_by_id(indentifier)
+    else:
+        job_row = get_job_by_name(indentifier)
+    
+    if not job_row:
+        print(f"Job not found: {indentifier}")
+        return
+    
+    print(job_row)
+
