@@ -36,7 +36,6 @@ def show_job_cli(indentifier, by_id=False):
     if not job_row:
         print(f"Job not found: {indentifier}")
         return
-    
     (
         job_id,
         job_name,
@@ -49,14 +48,13 @@ def show_job_cli(indentifier, by_id=False):
         description,
     ) = job_row
 
-    
-
-    print(job_id,
-        job_name,
-        command,
-        job_type,
-        start_time,
-        run_days_json,
-        conditions,
-        enabled,
-        description,)
+    print(f"\n-{job_name}")
+    print(f"  {'id':<12}: {job_id}")
+    print(f"  {'command':<12}: {command}")
+    print(f"  {'job_type':<12}: {job_type}")
+    print(f"  {'start_time':<12}: {start_time}")
+    print(f"  {'run_days':<12}: {run_days_json}")
+    print(f"  {'conditions':<12}: {conditions}")
+    print(f"  {'enabled':<12}: {enabled}")
+    print(f"  {'description':<12}: {description}")
+    print("\n")
