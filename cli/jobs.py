@@ -37,5 +37,26 @@ def show_job_cli(indentifier, by_id=False):
         print(f"Job not found: {indentifier}")
         return
     
-    print(job_row)
+    (
+        job_id,
+        job_name,
+        command,
+        job_type,
+        start_time,
+        run_days_json,
+        conditions,
+        enabled,
+        description,
+    ) = job_row
 
+    
+
+    print(job_id,
+        job_name,
+        command,
+        job_type,
+        start_time,
+        run_days_json,
+        conditions,
+        enabled,
+        description,)
