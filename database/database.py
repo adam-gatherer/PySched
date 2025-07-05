@@ -125,3 +125,23 @@ def get_job_by_id(job_id: str):
     row = cursor.fetchone()
     conn.close()
     return row
+
+
+def rm_job_by_name(job_name: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM jobs WHERE job_name = ?", (job_name,))
+    deleted = cursor.rowcount > 0
+    conn.commit()
+    conn.close()
+    return deleted
+
+
+def rm_job_by_id(job_id: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM jobs WHERE job_name = ?", (job_id,))
+    deleted = cursor.rowcount > 0
+    conn.commit()
+    conn.close()
+    return deleted
