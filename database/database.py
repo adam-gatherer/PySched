@@ -140,7 +140,7 @@ def rm_job_by_name(job_name: str):
 def rm_job_by_id(job_id: str):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM jobs WHERE job_name = ?", (job_id,))
+    cursor.execute("DELETE FROM jobs WHERE id = ?", (job_id,))
     deleted = cursor.rowcount > 0
     conn.commit()
     conn.close()
