@@ -1,4 +1,5 @@
 import yaml
+import os
 from database.database import (
     insert_job,
     list_jobs,
@@ -10,13 +11,27 @@ from database.database import (
 
 
 def add_job_from_file(filename: str):
-    with open(filename, "r") as file:
-        try:
+    # Check file exists etc.
+    if not filename.endswith(".job"):
+        print("Err, only .job files are supported.")
+        return
+    if not os.path.isfile(filename):
+        print(f"Err, {filename} does not appear to exist.")
+        return
+    # Check file is valid
+    try:
+        with open(filename, "r") as file:
             job_data = yaml.safe_load(file)
-            insert_job(job_data)
-            print(f"Job {job_data['job_name']} added to database.")
-        except Exception as e:
-            print(f"Failed to load job: {e}")
+    except yaml.YAMLError as e:
+        print(f"Err, YAML error in {filename}: {e}")
+    except Exception as e:
+        print(f"Failed to load job: {e}")
+    # Attempt to add job
+    try:
+        insert_job(job_data)
+        print(f"Job {job_data['job_name']} added to database.")
+    except Exception as e:
+        print(f"Err, failed to insert {filename}: {e}")
 
 
 def list_jobs_cli():
