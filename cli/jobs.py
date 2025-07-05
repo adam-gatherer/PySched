@@ -7,7 +7,6 @@ from database.database import (
     rm_job_by_id,
     rm_job_by_name,
 )
-import json as jason
 
 
 def add_job_from_file(filename: str):
