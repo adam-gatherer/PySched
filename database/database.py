@@ -76,11 +76,36 @@ def insert_job(job_data: dict):
                 condition_type,
                 dependent_jobs_str,
                 int(enabled),  # SQLite uses 0/1 for bools
-                description
-            )
+                description,
+            ),
         )
         conn.commit()
     except sqlite3.IntegrityError:
         raise ValueError(f"A job with the name {job_name} already exists.")
     finally:
         conn.close()
+
+
+def list_jobs():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "select id, job_name, command, job_type, start_time, run_days, enabled, description from jobs"
+    )
+    rows = cursor.fetchall()
+    cursor.close()
+
+    jobs = []
+    for row in rows:
+        job = {
+            "id": row[0],
+            "job_name": row[1],
+            "command": row[2],
+            "job_type": row[3],
+            "start_time": row[4],
+            "run_days": row[5],
+            "enabled": bool(row[6]),
+            "description": row[7],
+        }
+        jobs.append(job)
+    return jobs

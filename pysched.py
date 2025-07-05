@@ -1,5 +1,5 @@
 from database.database import ensure_db_exists
-from cli.jobs import add_job_from_file
+from cli.jobs import add_job_from_file, list_jobs_cli
 import yaml
 import argparse
 
@@ -10,15 +10,24 @@ def main():
     # CLI argument setup
     parser = argparse.ArgumentParser(description="PySched Job Scheduler")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
     # Adding a job
     add_parser = subparsers.add_parser(
         "add-job", help="Add a job from a .job YAML file"
     )
     add_parser.add_argument("filename", help="Path to .job YAML file")
+    # Listing all jobs
+    list_parser = subparsers.add_parser(
+        "list-jobs", help="List jobs in scheduler database"
+    )
+
+    # Catch arguments
     args = parser.parse_args()
 
     if args.command == "add-job":
         add_job_from_file(args.filename)
+    elif args.command == "list-jobs":
+        list_jobs_cli()
     else:
         parser.print_help()
 
