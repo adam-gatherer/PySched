@@ -1,5 +1,12 @@
 import yaml
-from database.database import insert_job, list_jobs, get_job_by_name, get_job_by_id
+from database.database import (
+    insert_job,
+    list_jobs,
+    get_job_by_name,
+    get_job_by_id,
+    rm_job_by_id,
+    rm_job_by_name,
+)
 import json as jason
 
 
@@ -62,10 +69,6 @@ def show_job_cli(identifier: str, by_id=False):
 
 def remove_job_cli(identifier: str, by_id=False):
     if by_id:
-        job_row = get_job_by_id(identifier)
+        rm_job_by_id(identifier)
     else:
-        job_row = get_job_by_name(identifier)
-
-    if not job_row:
-        print(f"Job not found: {identifier}")
-        return
+        rm_job_by_name(identifier)
