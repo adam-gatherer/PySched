@@ -40,17 +40,20 @@ def is_alphanumeric(key, val):
         return {"valid": False, "message": f"Property {key} must be alphanumeric"}
 
 
-def max_length(key, val, length):
-    if len.val() > length:
-        return {"valid": False, "message": f"Property {key} exceeds {length} character limit"}
-    else:
-        return {"valid": True, "message": ""}
+def max_length(length):
+    def validator (key, val):
+        if len(val) > length:
+            return {"valid": False, "message": f"Property {key} is too long ({length} characters)"}
+        else:
+            return {"valid": True, "message": ""}
+    return validator
 
 
 def is_integer(key, val):
-    if int(val):
+    try:
+        int(val)
         return {"valid": True, "message": ""}
-    else:
+    except:
         return {"valid": False, "message": f"Property {key} is not an integer"}
 
  
@@ -82,6 +85,11 @@ def validate_job_file(job_data: dict):
         "enabled": [is_required, is_boolean],
         "description": [is_required, is_alphanumeric, max_length(256)]
     }
+
+    for key, val in job_template.items():
+        if key == "job_name":
+            for function in val:
+                print(function(key, str(val)))
 
 
 def read_job_file(filename: str) -> dict:
