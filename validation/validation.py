@@ -9,18 +9,22 @@ def is_required(key, val):
 
 
 def is_valid_job_name(key, val):
-    if re.match(r'A-Za-z0-9', val):
+    if re.match(r"A-Za-z0-9", val):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} must be alphanumeric"}
 
 
 def max_length(length):
-    def validator (key, val):
+    def validator(key, val):
         if len(val) > length:
-            return {"valid": False, "message": f"Property {key} is too long ({length} characters)"}
+            return {
+                "valid": False,
+                "message": f"Property {key} is too long ({length} characters)",
+            }
         else:
             return {"valid": True, "message": ""}
+
     return validator
 
 
@@ -42,9 +46,9 @@ def is_nullish_integer(key, val):
         except:
             return {"valid": False, "message": f"Property {key} is not an integer"}
 
- 
+
 def is_valid_time(key, val):
-    pattern = r'^(?:[01]\d|2[0-3]):[0-5]\d$'
+    pattern = r"^(?:[01]\d|2[0-3]):[0-5]\d$"
     if re.match(pattern, val):
         return {"valid": True, "message": ""}
     else:
@@ -56,16 +60,20 @@ def is_boolean(key, val):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} is not 'true' or 'false'"}
-    
-    
-def is_job_type(key,val):
+
+
+def is_job_type(key, val):
     if val in ("command", "box"):
         return {"valid": True, "message": ""}
     else:
-        return {"valid": False, "message": f"Property {key} not valid job type (command, box)"}
-    
-def is_valid_description(key,val):
-    if re.match(r'A-Za-z0-9', val):
+        return {
+            "valid": False,
+            "message": f"Property {key} not valid job type (command, box)",
+        }
+
+
+def is_valid_description(key, val):
+    if re.match(r"A-Za-z0-9", val):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} must be alphanumeric"}
@@ -82,27 +90,24 @@ def validate_job_file(job_data: dict):
         "retry_count": [is_nullish_integer],
         "timeout_seconds": [is_nullish_integer],
         "enabled": [is_required, is_boolean],
-        "description": [is_required, is_valid_description, max_length(256)]
+        "description": [is_required, is_valid_description, max_length(256)],
     }
 
     for key, validators in job_template.items():
 
         job_data_value = job_data[key]
 
-        #if key == "retry_count":
+        # if key == "retry_count":
         print(f"{key}: {job_data_value}")
         for function in validators:
             validation_check = function.__name__
             print(f"  - {validation_check}")
             validation_output = function(key, job_data_value)
-            if validation_output['valid']:
+            if validation_output["valid"]:
                 print("    - okay!")
             else:
                 print(f"    - ERROR: {validation_output['message']}")
         print("\n")
-
-
-
 
 
 def read_job_file(filename: str) -> dict:
@@ -123,7 +128,6 @@ def read_job_file(filename: str) -> dict:
         print(f"Failed to load job: {e}")
 
     return job_data
-
 
 
 job_data = read_job_file("template.job")
