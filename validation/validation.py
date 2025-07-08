@@ -56,6 +56,17 @@ def is_integer(key, val):
     except:
         return {"valid": False, "message": f"Property {key} is not an integer"}
 
+
+def is_nullish_integer(key, val):
+    if val == None:
+        return {"valid": True, "message": ""}
+    else:
+        try:
+            int(val)
+            return {"valid": True, "message": ""}
+        except:
+            return {"valid": False, "message": f"Property {key} is not an integer"}
+
  
 def is_valid_time(key, val):
     pattern = r'^(?:[01]\d|2[0-3]):[0-5]\d$'
@@ -70,27 +81,44 @@ def is_boolean(key, val):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} is not 'true' or 'false'"}
+    
+    
+def is_job_type(key,val):
+    if val in ("command", "box"):
+        return {"valid": True, "message": ""}
+    else:
+        return {"valid": False, "message": f"Property {key} not valid job type (command, box)"}
 
 
 def validate_job_file(job_data: dict):
     job_template = {
         "job_name": [is_required, is_alphanumeric, max_length(64)],
         "command": [is_required],
-        "job_type": [is_required],
+        "job_type": [is_required, is_job_type],
         "start_time": [is_required, is_valid_time],
         "run_days": [is_required],
         "conditions": [],
-        "retry_count": [is_integer],
-        "timout_seconds": [is_integer],
+        "retry_count": [is_nullish_integer],
+        "timeout_seconds": [is_nullish_integer],
         "enabled": [is_required, is_boolean],
         "description": [is_required, is_alphanumeric, max_length(256)]
     }
 
-    for key, val in job_template.items():
-        if key == "job_name":
-            for function in val:
-                print(function(key, str(val)))
+    for key, validators in job_template.items():
+        job_data_value = job_data[key]
 
+        if key == "job_name":
+            print(f"{key}: {job_data_value}")
+            for function in validators:
+                
+                print(function.__name__, function(key, str(job_data_value)))
+        """
+        if key == "job_name":
+            print(str(key))
+            for function in val:
+                print(function.__name__, function(key, str(val)))
+            print("\n")
+        """
 
 def read_job_file(filename: str) -> dict:
     # Check file exists etc.
