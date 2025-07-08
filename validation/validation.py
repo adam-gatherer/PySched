@@ -1,30 +1,5 @@
 import yaml, os, re
-"""
-# Template job file
-job_name: T01_TEST_JOB
-command: "echo 'howdy'"
-job_type: command
-start_time: "00:00"
-run_days: ["Mon", "Wed", "Fri"]
-conditions:
-retry_count:
-timout_seconds:
-enabled: true
-description: "Friendly test job."
 
-
-
-"job_name":
-"command":
-"job_type":
-"start_time":
-"run_days":
-"conditions":
-"retry_count":
-"timout_seconds":
-"enabled":
-"description":
-"""
 
 def is_required(key, val):
     if val is None:
@@ -33,7 +8,7 @@ def is_required(key, val):
         return {"valid": True, "message": ""}
 
 
-def is_alphanumeric(key, val):
+def is_valid_job_name(key, val):
     if re.match(r'A-Za-z0-9', val):
         return {"valid": True, "message": ""}
     else:
@@ -58,7 +33,7 @@ def is_integer(key, val):
 
 
 def is_nullish_integer(key, val):
-    if val == None:
+    if val is None:
         return {"valid": True, "message": ""}
     else:
         try:
@@ -77,7 +52,7 @@ def is_valid_time(key, val):
 
 
 def is_boolean(key, val):
-    if val.lower() in ("true", "false"):
+    if str(val).lower() in ("true", "false"):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} is not 'true' or 'false'"}
@@ -88,11 +63,17 @@ def is_job_type(key,val):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} not valid job type (command, box)"}
+    
+def is_valid_description(key,val):
+    if re.match(r'A-Za-z0-9', val):
+        return {"valid": True, "message": ""}
+    else:
+        return {"valid": False, "message": f"Property {key} must be alphanumeric"}
 
 
 def validate_job_file(job_data: dict):
     job_template = {
-        "job_name": [is_required, is_alphanumeric, max_length(64)],
+        "job_name": [is_required, is_valid_job_name, max_length(64)],
         "command": [is_required],
         "job_type": [is_required, is_job_type],
         "start_time": [is_required, is_valid_time],
@@ -101,24 +82,28 @@ def validate_job_file(job_data: dict):
         "retry_count": [is_nullish_integer],
         "timeout_seconds": [is_nullish_integer],
         "enabled": [is_required, is_boolean],
-        "description": [is_required, is_alphanumeric, max_length(256)]
+        "description": [is_required, is_valid_description, max_length(256)]
     }
 
     for key, validators in job_template.items():
+
         job_data_value = job_data[key]
 
-        if key == "job_name":
-            print(f"{key}: {job_data_value}")
-            for function in validators:
-                
-                print(function.__name__, function(key, str(job_data_value)))
-        """
-        if key == "job_name":
-            print(str(key))
-            for function in val:
-                print(function.__name__, function(key, str(val)))
-            print("\n")
-        """
+        #if key == "retry_count":
+        print(f"{key}: {job_data_value}")
+        for function in validators:
+            validation_check = function.__name__
+            print(f"  - {validation_check}")
+            validation_output = function(key, job_data_value)
+            if validation_output['valid']:
+                print("    - okay!")
+            else:
+                print(f"    - ERROR: {validation_output['message']}")
+        print("\n")
+
+
+
+
 
 def read_job_file(filename: str) -> dict:
     # Check file exists etc.
