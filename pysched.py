@@ -2,6 +2,7 @@ import argparse
 import yaml
 from database.database import ensure_db_exists
 from cli.jobs import add_job_from_file, list_jobs_cli, show_job_cli, remove_job_cli
+from validation.validation import validate_job_file
 
 
 def main():
@@ -57,7 +58,9 @@ def main():
 
     # Job handler
     if args.command == "add-job":
-        add_job_from_file(args.filename)
+        validation = validate_job_file(args.filename)
+
+
     elif args.command == "list-jobs":
         list_jobs_cli()
     elif args.command == "show-job":
