@@ -9,14 +9,14 @@ def is_required(key, val):
 
 
 def is_valid_job_name(key, val):
-    if re.match(r"A-Za-z0-9", val):
+    if re.match(r"[A-Za-z0-9_-]+", val):
         return {"valid": True, "message": ""}
     else:
         return {"valid": False, "message": f"Property {key} must be alphanumeric"}
 
 
 def max_length(length):
-    def validator(key, val):
+    def length_validator(key, val):
         if len(val) > length:
             return {
                 "valid": False,
@@ -25,7 +25,21 @@ def max_length(length):
         else:
             return {"valid": True, "message": ""}
 
-    return validator
+    return length_validator
+
+
+def min_length(length):
+    def min_length_validator(key, val):
+        if len(val) < length:
+            return {
+                "valid": False,
+                "message": f"Property {key} is too short ({length} characters)",
+            }
+        else:
+            return {"valid": True, "message": ""}
+
+    return min_length_validator
+
 
 
 def is_integer(key, val):
@@ -81,7 +95,7 @@ def is_valid_description(key, val):
 
 def validate_job_file(job_data: dict):
     job_template = {
-        "job_name": [is_required, is_valid_job_name, max_length(64)],
+        "job_name": [is_required, is_valid_job_name, max_length(64), min_length(3)],
         "command": [is_required],
         "job_type": [is_required, is_job_type],
         "start_time": [is_required, is_valid_time],
