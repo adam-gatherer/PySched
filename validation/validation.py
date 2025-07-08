@@ -16,7 +16,7 @@ def is_valid_job_name(key, val):
 
 
 def max_length(length):
-    def length_validator(key, val):
+    def max_length_validator(key, val):
         if len(val) > length:
             return {
                 "valid": False,
@@ -25,7 +25,7 @@ def max_length(length):
         else:
             return {"valid": True, "message": ""}
 
-    return length_validator
+    return max_length_validator
 
 
 def min_length(length):
