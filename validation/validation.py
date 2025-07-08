@@ -1,4 +1,4 @@
-import yaml, os
+import yaml, os, re
 """
 # Template job file
 job_name: T01_TEST_JOB
@@ -26,6 +26,63 @@ description: "Friendly test job."
 "description":
 """
 
+def is_required(key, val):
+    if val is None:
+        return {"valid": False, "message": f"Property {key} missing"}
+    else:
+        return {"valid": True, "message": ""}
+
+
+def is_alphanumeric(key, val):
+    if re.match(r'A-Za-z0-9', val):
+        return {"valid": True, "message": ""}
+    else:
+        return {"valid": False, "message": f"Property {key} must be alphanumeric"}
+
+
+def max_length(key, val, length):
+    if len.val() > length:
+        return {"valid": False, "message": f"Property {key} exceeds {length} character limit"}
+    else:
+        return {"valid": True, "message": ""}
+
+
+def is_integer(key, val):
+    if int(val):
+        return {"valid": True, "message": ""}
+    else:
+        return {"valid": False, "message": f"Property {key} is not an integer"}
+
+ 
+def is_valid_time(key, val):
+    pattern = r'^(?:[01]\d|2[0-3]):[0-5]\d$'
+    if re.match(pattern, val):
+        return {"valid": True, "message": ""}
+    else:
+        return {"valid": False, "message": f"Property {key} is not a valid HH:MM time"}
+
+
+def is_boolean(key, val):
+    if val.lower() in ("true", "false"):
+        return {"valid": True, "message": ""}
+    else:
+        return {"valid": False, "message": f"Property {key} is not 'true' or 'false'"}
+
+
+def validate_job_file(job_data: dict):
+    job_template = {
+        "job_name": [is_required, is_alphanumeric, max_length(64)],
+        "command": [is_required],
+        "job_type": [is_required],
+        "start_time": [is_required, is_valid_time],
+        "run_days": [is_required],
+        "conditions": [],
+        "retry_count": [is_integer],
+        "timout_seconds": [is_integer],
+        "enabled": [is_required, is_boolean],
+        "description": [is_required, is_alphanumeric, max_length(256)]
+    }
+
 
 def read_job_file(filename: str) -> dict:
     # Check file exists etc.
@@ -50,3 +107,4 @@ def read_job_file(filename: str) -> dict:
 
 job_data = read_job_file("template.job")
 
+validate_job_file(job_data)
