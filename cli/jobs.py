@@ -10,36 +10,7 @@ from database.database import (
 )
 
 
-def add_job_from_file(filename: str):
-    """
-    Adds job to scheduler database from a .job YAML file.
-
-    Validates that the file:
-    - Has `.job` extension
-    - Exists on disk
-    - Is valid YAML
-
-    If valid, parses YAML content and inserts job into database.
-    Prints success or error messages accordingly.
-
-    Args:
-        filename (str): Path to .job file containing job definition.
-    """
-    # Check file exists etc.
-    if not filename.endswith(".job"):
-        print("Err, only .job files are supported.")
-        return
-    if not os.path.isfile(filename):
-        print(f"Err, {filename} does not appear to exist.")
-        return
-    # Check file is valid
-    try:
-        with open(filename, "r") as file:
-            job_data = yaml.safe_load(file)
-    except yaml.YAMLError as e:
-        print(f"Err, YAML error in {filename}: {e}")
-    except Exception as e:
-        print(f"Failed to load job: {e}")
+def add_job_from_file(job_data):
     # Attempt to add job
     try:
         insert_job(job_data)
