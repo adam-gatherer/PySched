@@ -38,7 +38,7 @@ def main():
         "-id", "--job-id", action="store_true", help="Remove job by ID"
     )
     rm_parser.add_argument(
-    "-f", "--force", action="store_true", help="Force delete without confirmation"
+        "-f", "--force", action="store_true", help="Force delete without confirmation"
     )
 
     add_parser.add_argument("filename", help="Path to .job YAML file")
@@ -58,8 +58,7 @@ def main():
 
     # Job handler
     if args.command == "add-job":
-        validation = validate_job_file(args.filename)
-
+        add_job_from_file(args.filename)
 
     elif args.command == "list-jobs":
         list_jobs_cli()
