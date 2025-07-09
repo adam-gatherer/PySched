@@ -162,10 +162,10 @@ def read_job_file(filename: str):
     # Check file exists etc.
     if not filename.endswith(".job"):
         print("Err, only .job files are supported.")
-        sys.exit
+        sys.exit(1)
     if not os.path.isfile(filename):
         print(f"Err, {filename} does not appear to exist.")
-        sys.exit
+        sys.exit(1)
     # Check file is valid
     try:
         with open(filename, "r") as file:
