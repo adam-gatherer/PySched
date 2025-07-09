@@ -41,7 +41,6 @@ def min_length(length):
     return min_length_validator
 
 
-
 def is_integer(key, val):
     try:
         int(val)
@@ -124,7 +123,7 @@ def validate_job_file(job_data: dict):
         print("\n")
 
 
-def read_job_file(filename: str) -> dict:
+def read_job_file(filename: str):
     # Check file exists etc.
     if not filename.endswith(".job"):
         print("Err, only .job files are supported.")
