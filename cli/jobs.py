@@ -1,5 +1,6 @@
 import os
 import yaml
+from validation.validation import read_job_file, validate_job_file
 from database.database import (
     insert_job,
     list_jobs,
@@ -10,13 +11,16 @@ from database.database import (
 )
 
 
-def add_job_from_file(job_data):
-    # Attempt to add job
-    try:
-        insert_job(job_data)
-        print(f"Job {job_data['job_name']} added to database.")
-    except Exception as e:
-        print(f"Err, failed to insert {filename}: {e}")
+def add_job_from_file(filename: str):
+
+    job_data = read_job_file(filename)
+    if validate_job_file(job_data):
+        # Attempt to add job
+        try:
+            insert_job(job_data)
+            print(f"Job {job_data['job_name']} added to database.")
+        except Exception as e:
+            print(f"Err, failed to insert {filename}: {e}")
 
 
 def list_jobs_cli():
@@ -26,7 +30,7 @@ def list_jobs_cli():
     Retrieves all job entries using `list_jobs()` function and prints them to the
     console in human-readable format. If no jobs found, prints message to indicate this.
 
-    Output includes each job's name and associated metadata (e.g., start time, 
+    Output includes each job's name and associated metadata (e.g., start time,
     command, retries, etc.).
 
     This function is intended to be called via the command-line interface.
@@ -100,7 +104,7 @@ def remove_job_cli(identifier: str, by_id=False, force=False):
 
     Parameters:
         identifier (str): Job name or ID to remove.
-        by_id (bool, optional): If True, treats 'identifier' as job ID (integer). 
+        by_id (bool, optional): If True, treats 'identifier' as job ID (integer).
                                 If False (default), treats it as job name.
         force (bool, optional): If True, skips confirmation prompt before deletion.
 
@@ -127,9 +131,6 @@ def remove_job_cli(identifier: str, by_id=False, force=False):
             print(f"Job {identifier} removed")
         else:
             print(f"No job found with name: '{identifier}'")
-
-
-
 
 
 def confirm_removal(identifier, by_id):

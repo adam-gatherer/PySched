@@ -1,4 +1,4 @@
-import yaml, os, re
+import yaml, os, re, sys
 
 
 def is_required(key, val):
@@ -171,10 +171,10 @@ def read_job_file(filename: str):
     # Check file exists etc.
     if not filename.endswith(".job"):
         print("Err, only .job files are supported.")
-        return
+        sys.exit
     if not os.path.isfile(filename):
         print(f"Err, {filename} does not appear to exist.")
-        return
+        sys.exit
     # Check file is valid
     try:
         with open(filename, "r") as file:
