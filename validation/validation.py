@@ -169,6 +169,6 @@ def read_job_file(filename: str):
     return job_data
 
 
-job_data = read_job_file("template.job")
-
-validate_job_file(job_data)
+if __name__ == "__main__":
+    job_data = read_job_file("template.job")
+    validate_job_file(job_data)
