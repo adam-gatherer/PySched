@@ -111,6 +111,24 @@ def is_valid_description(key, val):
 
 
 def validate_job_file(job_data: dict) -> bool:
+    """
+    Validates structure and content of .job file.
+
+    This function checks whether each required property in the job data conforms
+    to the expected type, format, and value constraints defined in the job template.
+
+    Parameters:
+        job_data (dict): Dictionary representing the contents of a .job file.
+
+    Returns:
+        bool: True if all validations pass; False if any validation errors are found.
+              Errors printed to the console.
+
+    Validation includes:
+        - Required fields must be present and non-null.
+        - Field-specific checks (e.g. string format, length, type constraints).
+        - Logical validations such as time format, boolean values, and job type.
+    """
     # Checks to run on job file properties
     job_template = {
         "job_name": [is_required, is_valid_job_name, max_length(64), min_length(3)],
