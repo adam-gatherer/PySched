@@ -131,7 +131,6 @@ def validate_job_file(job_data: dict):
             job_data_value = job_data[key]
 
             for function in validators:
-                validation_check = function.__name__
                 validation_output = function(key, job_data_value)
                 if validation_output["valid"]:
                     pass
@@ -145,7 +144,7 @@ def validate_job_file(job_data: dict):
             print(error)
         return False
     else:
-        return job_data
+        return True
 
 
 def read_job_file(filename: str):
