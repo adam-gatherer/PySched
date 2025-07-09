@@ -4,18 +4,16 @@ import yaml, os, re, sys
 def is_required(key, val):
     if val is None:
         return {"valid": False, "message": f"Property '{key}' missing"}
-    else:
-        return {"valid": True, "message": ""}
+    return {"valid": True, "message": ""}
 
 
 def is_valid_job_name(key, val):
     if re.match(r"^[A-Za-z0-9_-]+$", val):
         return {"valid": True, "message": ""}
-    else:
-        return {
-            "valid": False,
-            "message": f"Property '{key}' must be alphanumeric\nval: {val}",
-        }
+    return {
+        "valid": False,
+        "message": f"Property '{key}' must be alphanumeric\nval: {val}",
+    }
 
 
 def max_length(length):
@@ -25,8 +23,7 @@ def max_length(length):
                 "valid": False,
                 "message": f"Property '{key}' is too long\nval: {val} characters, max {length}",
             }
-        else:
-            return {"valid": True, "message": ""}
+        return {"valid": True, "message": ""}
 
     return max_length_validator
 
@@ -38,8 +35,7 @@ def min_length(length):
                 "valid": False,
                 "message": f"Property '{key}' is too short\nval: {val} characters, min {length}",
             }
-        else:
-            return {"valid": True, "message": ""}
+        return {"valid": True, "message": ""}
 
     return min_length_validator
 
@@ -58,56 +54,51 @@ def is_integer(key, val):
 def is_nullish_integer(key, val):
     if val is None:
         return {"valid": True, "message": ""}
-    else:
-        try:
-            int(val)
-            return {"valid": True, "message": ""}
-        except:
-            return {
-                "valid": False,
-                "message": f"Property '{key}' is not an integer\val: {val}",
-            }
+    try:
+        int(val)
+        return {"valid": True, "message": ""}
+    except:
+        return {
+            "valid": False,
+            "message": f"Property '{key}' is not an integer\val: {val}",
+        }
 
 
 def is_valid_time(key, val):
     pattern = r"^(?:[01]\d|2[0-3]):[0-5]\d$"
     if re.match(pattern, val):
         return {"valid": True, "message": ""}
-    else:
-        return {
-            "valid": False,
-            "message": f"Property '{key}' is not a valid HH:MM time\nval: {val}",
-        }
+    return {
+        "valid": False,
+        "message": f"Property '{key}' is not a valid HH:MM time\nval: {val}",
+    }
 
 
 def is_boolean(key, val):
     if str(val).lower() in ("true", "false"):
         return {"valid": True, "message": ""}
-    else:
-        return {
-            "valid": False,
-            "message": f"Property '{key}' is not 'true' or 'false'\nval: {val}",
-        }
+    return {
+        "valid": False,
+        "message": f"Property '{key}' is not 'true' or 'false'\nval: {val}",
+    }
 
 
 def is_job_type(key, val):
     if val in ("command", "box"):
         return {"valid": True, "message": ""}
-    else:
-        return {
-            "valid": False,
-            "message": f"Property '{key}' not valid job type (command, box)\nval: {val}",
-        }
+    return {
+        "valid": False,
+        "message": f"Property '{key}' not valid job type (command, box)\nval: {val}",
+    }
 
 
 def is_valid_description(key, val):
     if re.match(r"A-Za-z0-9", val):
         return {"valid": True, "message": ""}
-    else:
-        return {
-            "valid": False,
-            "message": f"Property '{key}' must be alphanumeric\nval: {val}",
-        }
+    return {
+        "valid": False,
+        "message": f"Property '{key}' must be alphanumeric\nval: {val}",
+    }
 
 
 def validate_job_file(job_data: dict) -> bool:
@@ -163,8 +154,8 @@ def validate_job_file(job_data: dict) -> bool:
         for error in errors:
             print(error)
         return False
-    else:
-        return True
+
+    return True
 
 
 def read_job_file(filename: str):
