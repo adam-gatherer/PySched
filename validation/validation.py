@@ -9,12 +9,12 @@ def is_required(key, val):
 
 
 def is_valid_job_name(key, val):
-    if re.match(r"[A-Za-z0-9_-]+", val):
+    if re.match(r"^[A-Za-z0-9_-]+$", val):
         return {"valid": True, "message": ""}
     else:
         return {
             "valid": False,
-            "message": f"Property '{key}' must be alphanumeric\n{val}",
+            "message": f"Property '{key}' must be alphanumeric\nval: {val}",
         }
 
 
@@ -124,22 +124,28 @@ def validate_job_file(job_data: dict):
         "description": [is_required, is_valid_description, max_length(256)],
     }
 
+    errors = []
+
     for key, validators in job_template.items():
+        try:
+            job_data_value = job_data[key]
 
-        job_data_value = job_data[key]
+            for function in validators:
+                validation_check = function.__name__
+                validation_output = function(key, job_data_value)
+                if validation_output["valid"]:
+                    pass
+                else:
+                    errors.append(f"Err {validation_output['message']}")
+        except:
+            pass
 
-        # if key == "retry_count":
-        # print(f"{key}: {job_data_value}")
-        for function in validators:
-            validation_check = function.__name__
-            # print(f"  - {validation_check}")
-            validation_output = function(key, job_data_value)
-            if not validation_output["valid"]:
-                print(f"Err {validation_output['message']}")
-                # print("    - okay!")
-            # else:
-            # print(f"    - ERROR: {validation_output['message']}")
-        # print("\n")
+    if errors:
+        for error in errors:
+            print(error)
+            return False
+    else:
+        return job_data
 
 
 def read_job_file(filename: str):
