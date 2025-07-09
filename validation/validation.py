@@ -143,7 +143,7 @@ def validate_job_file(job_data: dict):
     if errors:
         for error in errors:
             print(error)
-            return False
+        return False
     else:
         return job_data
 
