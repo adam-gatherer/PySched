@@ -93,11 +93,11 @@ def is_job_type(key, val):
 
 
 def is_valid_description(key, val):
-    if re.match(r"A-Za-z0-9", val):
+    if re.match(r"^[\w\s.,!?'-]+$", val):
         return {"valid": True, "message": ""}
     return {
         "valid": False,
-        "message": f"Property '{key}' must be alphanumeric\nval: {val}",
+        "message": f"Property '{key}' must be alphanumeric or contain basic punctuation\nval: {val}",
     }
 
 
