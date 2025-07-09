@@ -110,7 +110,8 @@ def is_valid_description(key, val):
         }
 
 
-def validate_job_file(job_data: dict):
+def validate_job_file(job_data: dict) -> bool:
+    # Checks to run on job file properties
     job_template = {
         "job_name": [is_required, is_valid_job_name, max_length(64), min_length(3)],
         "command": [is_required],
@@ -126,6 +127,7 @@ def validate_job_file(job_data: dict):
 
     errors = []
 
+    # Iterate over template and check jobs
     for key, validators in job_template.items():
         try:
             job_data_value = job_data[key]
