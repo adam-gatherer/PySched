@@ -3,7 +3,7 @@ import yaml, os, re
 
 def is_required(key, val):
     if val is None:
-        return {"valid": False, "message": f"Property {key} missing"}
+        return {"valid": False, "message": f"Property '{key}' missing"}
     else:
         return {"valid": True, "message": ""}
 
@@ -12,7 +12,10 @@ def is_valid_job_name(key, val):
     if re.match(r"[A-Za-z0-9_-]+", val):
         return {"valid": True, "message": ""}
     else:
-        return {"valid": False, "message": f"Property {key} must be alphanumeric"}
+        return {
+            "valid": False,
+            "message": f"Property '{key}' must be alphanumeric\n{val}",
+        }
 
 
 def max_length(length):
@@ -20,7 +23,7 @@ def max_length(length):
         if len(val) > length:
             return {
                 "valid": False,
-                "message": f"Property {key} is too long ({length} characters)",
+                "message": f"Property '{key}' is too long\nval: {val} characters, max {length}",
             }
         else:
             return {"valid": True, "message": ""}
@@ -33,7 +36,7 @@ def min_length(length):
         if len(val) < length:
             return {
                 "valid": False,
-                "message": f"Property {key} is too short ({length} characters)",
+                "message": f"Property '{key}' is too short\nval: {val} characters, min {length}",
             }
         else:
             return {"valid": True, "message": ""}
@@ -46,7 +49,10 @@ def is_integer(key, val):
         int(val)
         return {"valid": True, "message": ""}
     except:
-        return {"valid": False, "message": f"Property {key} is not an integer"}
+        return {
+            "valid": False,
+            "message": f"Property '{key}' is not an integer\nval: {val}",
+        }
 
 
 def is_nullish_integer(key, val):
@@ -57,7 +63,10 @@ def is_nullish_integer(key, val):
             int(val)
             return {"valid": True, "message": ""}
         except:
-            return {"valid": False, "message": f"Property {key} is not an integer"}
+            return {
+                "valid": False,
+                "message": f"Property '{key}' is not an integer\val: {val}",
+            }
 
 
 def is_valid_time(key, val):
@@ -65,14 +74,20 @@ def is_valid_time(key, val):
     if re.match(pattern, val):
         return {"valid": True, "message": ""}
     else:
-        return {"valid": False, "message": f"Property {key} is not a valid HH:MM time"}
+        return {
+            "valid": False,
+            "message": f"Property '{key}' is not a valid HH:MM time\nval: {val}",
+        }
 
 
 def is_boolean(key, val):
     if str(val).lower() in ("true", "false"):
         return {"valid": True, "message": ""}
     else:
-        return {"valid": False, "message": f"Property {key} is not 'true' or 'false'"}
+        return {
+            "valid": False,
+            "message": f"Property '{key}' is not 'true' or 'false'\nval: {val}",
+        }
 
 
 def is_job_type(key, val):
@@ -81,7 +96,7 @@ def is_job_type(key, val):
     else:
         return {
             "valid": False,
-            "message": f"Property {key} not valid job type (command, box)",
+            "message": f"Property '{key}' not valid job type (command, box)\nval: {val}",
         }
 
 
@@ -89,7 +104,10 @@ def is_valid_description(key, val):
     if re.match(r"A-Za-z0-9", val):
         return {"valid": True, "message": ""}
     else:
-        return {"valid": False, "message": f"Property {key} must be alphanumeric"}
+        return {
+            "valid": False,
+            "message": f"Property '{key}' must be alphanumeric\nval: {val}",
+        }
 
 
 def validate_job_file(job_data: dict):
@@ -111,16 +129,17 @@ def validate_job_file(job_data: dict):
         job_data_value = job_data[key]
 
         # if key == "retry_count":
-        print(f"{key}: {job_data_value}")
+        # print(f"{key}: {job_data_value}")
         for function in validators:
             validation_check = function.__name__
-            print(f"  - {validation_check}")
+            # print(f"  - {validation_check}")
             validation_output = function(key, job_data_value)
-            if validation_output["valid"]:
-                print("    - okay!")
-            else:
-                print(f"    - ERROR: {validation_output['message']}")
-        print("\n")
+            if not validation_output["valid"]:
+                print(f"Err {validation_output['message']}")
+                # print("    - okay!")
+            # else:
+            # print(f"    - ERROR: {validation_output['message']}")
+        # print("\n")
 
 
 def read_job_file(filename: str):
